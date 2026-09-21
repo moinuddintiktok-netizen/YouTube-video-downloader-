@@ -13,40 +13,31 @@ try:
 except ImportError:
     HAS_YTDLP = False
 
-class YouTubeDownloaderApp(App):
+class YouTubeAndroidApp(App):
     def build(self):
-        self.title = "YouTube Pro Downloader - Android"
+        self.title = "YouTube Pro Downloader"
         
-        # Main Layout
         layout = BoxLayout(orientation='vertical', padding=25, spacing=15)
 
-        # Header Title
+        # Header Branding
         layout.add_widget(Label(
             text="[b]📥 YOUTUBE PRO DOWNLOADER[/b]",
             markup=True,
-            font_size='20sp',
+            font_size='22sp',
             color=(0.22, 0.74, 0.96, 1),
             size_hint_y=None,
             height=50
         ))
 
-        if not HAS_YTDLP:
-            layout.add_widget(Label(
-                text="⚠️ Warning: yt-dlp library not found in build environment!",
-                color=(0.93, 0.26, 0.26, 1),
-                size_hint_y=None,
-                height=40
-            ))
-
         # URL Input
-        layout.add_widget(Label(text="Paste YouTube Video URL:", font_size='14sp', color=(1, 1, 1, 1), size_hint_y=None, height=30))
+        layout.add_widget(Label(text="Enter YouTube Video URL:", font_size='14sp', color=(1, 1, 1, 1), size_hint_y=None, height=30))
         
         self.url_input = TextInput(
             text='',
-            hint_text='https://www.youtube.com/watch?v=...',
+            hint_text='https://youtube.com/...',
             multiline=False,
             size_hint_y=None,
-            height=45,
+            height=50,
             background_color=(0.11, 0.16, 0.25, 1),
             foreground_color=(1, 1, 1, 1)
         )
@@ -74,10 +65,10 @@ class YouTubeDownloaderApp(App):
         )
         layout.add_widget(self.status_label)
 
-        # Footer Branding (Strictly Maintained)
+        # Strict Branding Footer
         layout.add_widget(Label(
             text="Created by Chishti Bro Computer & Developers\nFounder: Moinuddin Chishti",
-            font_size='11sp',
+            font_size='12sp',
             italic=True,
             color=(0.58, 0.63, 0.72, 1),
             size_hint_y=None,
@@ -101,7 +92,7 @@ class YouTubeDownloaderApp(App):
 
     def download_thread(self, url):
         try:
-            # Save to standard Android download path or app storage
+            # Android Download Directory
             save_path = "/storage/emulated/0/Download"
             if not os.path.exists(save_path):
                 save_path = os.getcwd()
@@ -114,7 +105,7 @@ class YouTubeDownloaderApp(App):
             if HAS_YTDLP:
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     ydl.download([url])
-                Clock.schedule_once(lambda dt: self.update_ui(True, "Download Completed Successfully! 🎉"))
+                Clock.schedule_once(lambda dt: self.update_ui(True, "Download Completed! 🎉"))
             else:
                 Clock.schedule_once(lambda dt: self.update_ui(False, "Error: yt-dlp missing"))
         except Exception as e:
@@ -126,5 +117,5 @@ class YouTubeDownloaderApp(App):
         self.status_label.color = (0.13, 0.77, 0.36, 1) if success else (0.93, 0.26, 0.26, 1)
 
 if __name__ == '__main__':
-    YouTubeDownloaderApp().run()
-      
+    YouTubeAndroidApp().run()
+    
